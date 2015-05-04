@@ -1,0 +1,117 @@
+---
+title: "Average Medicare charge for extracranial procedures"
+author: "Brian High"
+date: "5/4/2015"
+output: html_document
+---
+
+SQLShare Config
+---------------
+
+As this script requires a SQLShare account and API key, check for the 
+`config` file. If you don't have one, check the 
+[SQLShare website](http://escience.washington.edu/get-help-now/accessing-sqlshare-r) 
+for more information on how to create this file.
+
+```{r}
+# Check for sqlshare config file and abort if not found
+stopifnot(file.exists("~/.sqlshare/config"))
+```
+
+Load Packages
+-------------
+
+Prepare the environment by loading the required packages.
+
+```{r}
+# Load packages
+pkgs <- c("sqlshare", "magrittr", "plyr", "knitr", "ggplot2")
+# install.packages(pkgs)       # Uncomment to install the packages if you need to.
+invisible(suppressMessages(suppressWarnings(lapply(pkgs, require, character.only=T))))
+```
+
+Query Database
+--------------
+
+Define our query and submit it to the SQLShare service.
+
+```{r}
+# Data source: 
+# https://data.cms.gov/Medicare/Inpatient-Prospective-Payment-System-IPPS-Provider/97k6-zzx3
+# https://sqlshare.escience.washington.edu/sqlshare/#s=query/high%40washington.edu/IPPS.csv
+sql <- "SELECT [Provider City],[Average Covered Charges] 
+        FROM [high@washington.edu].[table_IPPS.csv] 
+        WHERE [Provider State] = 'WA' 
+        AND [DRG Definition] = '039 - EXTRACRANIAL PROCEDURES W/O CC/MCC'"
+ipps <- fetch.data.frame(sql)
+```
+
+The SQLShare package has returned our data as a `data.frame`. 
+
+```{r}
+str(ipps)
+```
+
+Data Cleanup
+------------
+
+The `Average.Covered.Charge` amounts are stored as a factor, not as a number. We 
+should fix that, after removing the dollar signs and commas. First, let's rename 
+the columns, then use `sapply` and a custom function `clean_charge` to do the 
+rest.
+
+```{r}
+colnames(ipps) <- c('City', 'Average.Charge')
+
+clean_charge <- function(charge) {
+    as.character(charge) %>% gsub(pattern="[$,]", replacement="") %>% as.numeric
+}
+
+ipps$Average.Charge %<>% sapply(clean_charge)
+```
+
+Head and Tail
+-------------
+
+Now we'll take a look at the first and last lines of the data with `head` 
+and `tail`.
+
+```{r}
+head(ipps)
+tail(ipps)
+```
+
+Aggregate by City
+-----------------
+
+Since we have several cities with more than one Provider listed, group by 
+`City` and calculate the mean for each group. Then sort by `Average.Charge`, 
+making sure to also apply this order to the `City` factor levels.
+
+```{r}
+ipps <- aggregate(Average.Charge~City, ipps, mean)
+ipps <- arrange(ipps, Average.Charge, City)
+ipps$City <- factor(ipps$City, as.character(ipps$City))
+```
+
+Nicer Table
+-----------
+
+Format the table a little more nicely for our report using `kable`.
+
+```{r}
+kable(ipps, "html")
+```
+
+Bar Plot
+--------
+
+Finally, create a bar plot with `ggplot`.
+
+```{r}
+ggplot(ipps, aes(x=City, y=Average.Charge)) +
+    geom_bar(stat="identity", colour="black", fill="lightblue") +  
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+    ggtitle("Average covered Medicare charges for \nextracranial procedures in WA") +
+    labs(x="City", y="Average Covered Charges (US$)")
+```

@@ -1,0 +1,113 @@
+---
+title: "Average Medicare charge for extracranial procedures"
+author: "Brian High"
+date: "5/4/2015"
+output: html_document
+---
+
+Load Packages
+-------------
+
+Prepare the environment by loading the required packages.
+
+```{r}
+# Load packages
+pkgs <- c("rcurl", "magrittr", "dplyr", "knitr", "ggplot2")
+# install.packages(pkgs)       # Uncomment to install the packages if you need to.
+invisible(suppressMessages(suppressWarnings(lapply(pkgs, require, character.only=T))))
+```
+
+Download the Data
+-----------------
+
+This script uses `curl` to download the 
+[data file](https://data.cms.gov/Medicare/Inpatient-Prospective-Payment-System-IPPS-Provider/97k6-zzx3) 
+from [data.cms.gov](https://data.cms.gov).
+
+```{r}
+file <- "IPPS.csv"
+url <- "http://data.cms.gov/api/views/97k6-zzx3/rows.csv?accessType=DOWNLOAD"
+if (!file.exists(file)) { 
+    download.file(url, file) 
+}
+```
+
+Read and Subset the Data
+------------------------
+
+Read the CSV into a `data.frame` and `subset` by Washington Providers  
+with a specific DRG Definition: '039 - EXTRACRANIAL PROCEDURES W/O CC/MCC'. Then
+`select` only the columns `Provider.City` and `Average.Covered.Charges`. Lastly, 
+rename those columns to something a little shorter for convenience.
+
+```{r}
+ipps <- read.csv("IPPS.csv", header=T, stringsAsFactors=F)
+ipps <- subset(ipps, Provider.State=='WA')
+ipps <- subset(ipps, DRG.Definition=='039 - EXTRACRANIAL PROCEDURES W/O CC/MCC')
+ipps <- select(ipps, Provider.City, Average.Covered.Charges)
+colnames(ipps) <- c('City', 'Average.Charge')
+```
+
+```{r}
+str(ipps)
+```
+
+Data Cleanup
+------------
+
+The `Average.Charge` has dollar signs and commas which we will remove using 
+`sapply` and a custom function `clean_charge`.
+
+```{r}
+clean_charge <- function(charge) {
+    as.character(charge) %>% gsub(pattern="[$,]", replacement="") %>% as.numeric
+}
+
+ipps$Average.Charge %<>% sapply(clean_charge)
+```
+
+Head and Tail
+-------------
+
+Now we'll take a look at the first and last lines of the data with `head` 
+and `tail`.
+
+```{r}
+head(ipps)
+tail(ipps)
+```
+
+Aggregate by City
+-----------------
+
+Since we have several cities with more than one Provider listed, group by 
+`City` and calculate the mean for each group. Then sort by `Average.Charge` 
+and apply this order to the `City` as factor levels.
+
+```{r}
+ipps <- aggregate(Average.Charge~City, ipps, mean)
+ipps <- arrange(ipps, Average.Charge, City)
+ipps$City <- factor(ipps$City, as.character(ipps$City))
+```
+
+Nicer Table
+-----------
+
+Format the table a little more nicely for our report using `kable`.
+
+```{r}
+kable(ipps, "html")
+```
+
+Bar Plot
+--------
+
+Finally, create a bar plot with `ggplot`.
+
+```{r}
+ggplot(ipps, aes(x=City, y=Average.Charge)) +
+    geom_bar(stat="identity", colour="black", fill="lightblue") +  
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+    ggtitle("Average covered Medicare charges for \nextracranial procedures in WA") +
+    labs(x="City", y="Average Covered Charges (US$)")
+```
