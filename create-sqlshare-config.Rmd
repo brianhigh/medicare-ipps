@@ -2,7 +2,9 @@
 title: "Creating your SQLShare config file"
 author: "Brian High"
 date: "5/4/2015"
-output: html_document
+output:
+  html_document:
+    keep_md: true
 ---
 
 Introduction

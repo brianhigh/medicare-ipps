@@ -2,7 +2,9 @@
 title: "Average Medicare charge for extracranial procedures"
 author: "Brian High"
 date: "5/4/2015"
-output: html_document
+output:
+  html_document:
+    keep_md: true
 ---
 
 SQLShare Config
