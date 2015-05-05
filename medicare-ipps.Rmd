@@ -26,12 +26,14 @@ Prepare Environment
 Prepare the environment by loading the required packages...
 
 ```{r}
-# install.packages(pkgs)             # Uncomment to manually install packages
-pkg_installer <- "./checkallpkgs.R"  # Or automatically search and install...
+pkg_installer <- "./checkallpkgs.R"  # Automatically search and install...
 if (file.exists(pkg_installer)) { source(pkg_installer, echo=FALSE) }
 
+# ... or uncomment next line to manually install packages
+# install.packages(c("sqlshare", "magrittr", "dplyr", "knitr", "ggplot2"))
+
 # Load packages
-pkgs <- c("sqlshare", "magrittr", "plyr", "knitr", "ggplot2")
+pkgs <- c("sqlshare", "magrittr", "dplyr", "knitr", "ggplot2")
 invisible(suppressMessages(suppressWarnings(lapply(pkgs, require, character.only=T))))
 ```
 

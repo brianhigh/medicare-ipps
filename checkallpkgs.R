@@ -44,7 +44,7 @@ tryinstall <- function(p) {
 
 # Compile a list of Rpres and Rmd filenames in the current directory
 # Tip: Use pattern="*.(Rpres|R|Rmd)" to also check *.R scripts.
-filenames <- list.files(".", pattern="*.(Rpres|Rmd|R)", full.names=FALSE)
+filenames <- list.files(".", pattern="*.(Rpres|Rmd|R)$", full.names=FALSE)
 
 # Parse each file to find the packages used and compile into a list
 allpkgs <- c()
@@ -59,7 +59,7 @@ for (filename in filenames) {
     allpkgs <- c(allpkgs,pkgs)
 }
 
-# Remove duplicates and flase-positives
+# Remove duplicates and false-positives
 allpkgs <- unique(allpkgs)
 allpkgs <- allpkgs[!(allpkgs %in% c("n", "pkg", "pkgs"))]
 

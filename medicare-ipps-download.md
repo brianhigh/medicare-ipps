@@ -9,9 +9,34 @@ Prepare the environment by loading the required packages ...
 
 
 ```r
-# install.packages(pkgs)             # Uncomment to manually install packages
-pkg_installer <- "./checkallpkgs.R"  # Or automatically search and install...
+pkg_installer <- "./checkallpkgs.R"  # Automatically search and install...
 if (file.exists(pkg_installer)) { source(pkg_installer, echo=FALSE) }
+```
+
+```
+## Loading required package: magrittr
+## Loading required package: dplyr
+## 
+## Attaching package: 'dplyr'
+## 
+## The following object is masked from 'package:stats':
+## 
+##     filter
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+## 
+## Loading required package: knitr
+## Loading required package: ggplot2
+## Loading required package: sqlshare
+## Loading required package: RCurl
+## Loading required package: bitops
+```
+
+```r
+# ... or uncomment next line to manually install packages.
+# install.packages(c("magrittr", "dplyr", "knitr", "ggplot2"))
 
 # Load packages
 pkgs <- c("magrittr", "dplyr", "knitr", "ggplot2")
