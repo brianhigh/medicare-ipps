@@ -2,6 +2,26 @@
 Brian High  
 5/4/2015  
 
+Introduction
+------------
+
+We are going to investigate the average Medicare charges for 
+[extracranial procedures](https://www.cms.gov/icd10manual/fullcode_cms/P0054.html) 
+for cities in Washington State, using 
+[data](https://data.cms.gov/Medicare/Inpatient-Prospective-Payment-System-IPPS-Provider/97k6-zzx3) from the 
+[U.S. Department of Health and Human Services, Centers for Medicare and Medicaid Services](http://www.cms.gov/).
+
+This serves as an example of using a single RMarkdown script to download 
+data from a website, clean it up for analysis, and finally calculate 
+some basic statistics and produce a plot. As the code and explanation are 
+interwoven into the same executable document, this is an example of 
+[literate programming](http://en.wikipedia.org/wiki/Literate_programming).
+
+To reproduce this analysis, you can clone the 
+[GitHub repository](https://github.com/brianhigh/medicare-ipps) for this
+project into RStudio as a new project and execute the Rmd file with 
+"Knit HTML" or Chunks -> Run All.
+
 Prepare Environment
 --------------------
 
