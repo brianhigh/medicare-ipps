@@ -2,23 +2,30 @@
 Brian High  
 5/4/2015  
 
-Load Packages
--------------
+Prepare Environment
+--------------------
 
-Prepare the environment by loading the required packages.
+Prepare the environment by loading the required packages ...
 
 
 ```r
 # Load packages
-pkgs <- c("rcurl", "magrittr", "dplyr", "knitr", "ggplot2")
+pkgs <- c("magrittr", "dplyr", "knitr", "ggplot2")
 # install.packages(pkgs)       # Uncomment to install the packages if you need to.
 invisible(suppressMessages(suppressWarnings(lapply(pkgs, require, character.only=T))))
+```
+
+... and setting up `knitr`.
+
+
+```r
+opts_chunk$set(tidy=FALSE, cache=TRUE)
 ```
 
 Download the Data
 -----------------
 
-This script uses `curl` to download the 
+This script uses `download.file` to download the 
 [data file](https://data.cms.gov/Medicare/Inpatient-Prospective-Payment-System-IPPS-Provider/97k6-zzx3) 
 from [data.cms.gov](https://data.cms.gov).
 

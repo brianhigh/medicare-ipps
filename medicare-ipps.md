@@ -16,10 +16,10 @@ for more information on how to create this file.
 stopifnot(file.exists("~/.sqlshare/config"))
 ```
 
-Load Packages
--------------
+Prepare Environment
+-------------------
 
-Prepare the environment by loading the required packages.
+Prepare the environment by loading the required packages...
 
 
 ```r
@@ -27,6 +27,13 @@ Prepare the environment by loading the required packages.
 pkgs <- c("sqlshare", "magrittr", "plyr", "knitr", "ggplot2")
 # install.packages(pkgs)       # Uncomment to install the packages if you need to.
 invisible(suppressMessages(suppressWarnings(lapply(pkgs, require, character.only=T))))
+```
+
+... and setting up `knitr`.
+
+
+```r
+opts_chunk$set(tidy=FALSE, cache=TRUE)
 ```
 
 Query Database

@@ -73,13 +73,15 @@ img {
 <pre class="r"><code># Check for sqlshare config file and abort if not found
 stopifnot(file.exists(&quot;~/.sqlshare/config&quot;))</code></pre>
 </div>
-<div id="load-packages" class="section level2">
-<h2>Load Packages</h2>
-<p>Prepare the environment by loading the required packages.</p>
+<div id="prepare-environment" class="section level2">
+<h2>Prepare Environment</h2>
+<p>Prepare the environment by loading the required packages…</p>
 <pre class="r"><code># Load packages
 pkgs &lt;- c(&quot;sqlshare&quot;, &quot;magrittr&quot;, &quot;plyr&quot;, &quot;knitr&quot;, &quot;ggplot2&quot;)
 # install.packages(pkgs)       # Uncomment to install the packages if you need to.
 invisible(suppressMessages(suppressWarnings(lapply(pkgs, require, character.only=T))))</code></pre>
+<p>… and setting up <code>knitr</code>.</p>
+<pre class="r"><code>opts_chunk$set(tidy=FALSE, cache=TRUE)</code></pre>
 </div>
 <div id="query-database" class="section level2">
 <h2>Query Database</h2>
