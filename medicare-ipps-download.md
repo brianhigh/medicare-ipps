@@ -67,7 +67,7 @@ invisible(suppressMessages(suppressWarnings(lapply(pkgs, require, character.only
 
 
 ```r
-opts_chunk$set(tidy=FALSE, cache=TRUE)
+opts_chunk$set(tidy=FALSE, cache=FALSE)
 ```
 
 Download the Data
@@ -267,8 +267,8 @@ Finally, create a bar plot with `ggplot`.
 
 ```r
 ggplot(ipps, aes(x=City, y=Average.Charge)) +
-    geom_bar(stat="identity", colour="black", fill="lightblue") +  
-    theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+    geom_bar(stat="identity", colour="darkblue", fill="darkblue") +  
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
     ggtitle("Average covered Medicare charges for \nextracranial procedures in WA") +
     labs(x="City", y="Average Covered Charges (US$)")
 ```
