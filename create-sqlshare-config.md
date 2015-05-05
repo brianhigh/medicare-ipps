@@ -5,9 +5,9 @@ Brian High
 Introduction
 ------------
 
-This short tutorial will guide you through the steps to create a small  
-configuration file for use with SQLShare so that you can connect to the 
-UW [SQLShare](https://sqlshare.escience.washington.edu/sqlshare/) service 
+This short tutorial will guide you through the steps to create a small 
+configuration file for use with SQLShare so that you can connect to the UW 
+[SQLShare](https://sqlshare.escience.washington.edu/sqlshare/) service 
 from your R (or Python, etc.) code, using the 
 [REST API](http://escience.washington.edu/get-help-now/sql-share-rest-api).
 
