@@ -65,3 +65,5 @@ terminal emulator as:
 ```
 $EDITOR "~/.sqlshare/config"
 ```
+
+... or just navigate to the file and edit with your favorite text editor.
