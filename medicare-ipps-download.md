@@ -1,6 +1,6 @@
 # Average Medicare charge for extracranial procedures
 Brian High  
-5/4/2015  
+5/5/2015  
 
 Introduction
 ------------
@@ -11,7 +11,10 @@ for cities in Washington State, using
 [data](https://data.cms.gov/Medicare/Inpatient-Prospective-Payment-System-IPPS-Provider/97k6-zzx3) from the 
 [U.S. Department of Health and Human Services, Centers for Medicare and Medicaid Services](http://www.cms.gov/).
 
-This serves as an example of using a single RMarkdown script to download 
+Do the average Medicare covered charges for this procedure category vary from 
+city to city in our state? 
+
+This project serves as an example of using a single RMarkdown script to download 
 data from a website, clean it up for analysis, and finally calculate 
 some basic statistics and produce a plot. As the code and explanation are 
 interwoven into the same executable document, this is an example of 
@@ -29,38 +32,30 @@ Prepare the environment by loading the required packages ...
 
 
 ```r
-pkg_installer <- "./checkallpkgs.R"  # Automatically search and install...
-if (file.exists(pkg_installer)) { source(pkg_installer, echo=FALSE) }
-```
+# tryinstall() function
+#     Conditionally install using install.packages()
+#     Usage: tryinstall(c("package1", "package2", ...))
+tryinstall <- function(p) {
+    n <- p[!(p %in% installed.packages()[,"Package"])]
+    if(length(n)) {
+        install.packages(n, repos="http://cran.fhcrc.org", dependencies=TRUE)
+    }
+}
 
-```
-## Loading required package: magrittr
-## Loading required package: dplyr
-## 
-## Attaching package: 'dplyr'
-## 
-## The following object is masked from 'package:stats':
-## 
-##     filter
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-## 
-## Loading required package: knitr
-## Loading required package: ggplot2
-## Loading required package: sqlshare
-## Loading required package: RCurl
-## Loading required package: bitops
-```
-
-```r
-# ... or uncomment next line to manually install packages.
-# install.packages(c("magrittr", "dplyr", "knitr", "ggplot2"))
-
-# Load packages
+# You will need to load these packages
 pkgs <- c("magrittr", "dplyr", "knitr", "ggplot2")
-invisible(suppressMessages(suppressWarnings(lapply(pkgs, require, character.only=T))))
+
+# Attempt to load or install the packages using the tryinstall function
+tryinstall(pkgs)
+
+# ... or uncomment these next three lines to manually install packages.
+# install.packages(
+#     c("magrittr", "dplyr", "knitr", "ggplot2"), 
+#     repos="http://cran.fhcrc.org", dependencies=TRUE)
+
+# Check that all packages will load
+for (pkg in pkgs) suppressPackageStartupMessages(suppressWarnings(
+  require(pkg, character.only=TRUE, quietly=TRUE)))
 ```
 
 ... and setting up `knitr`.
@@ -89,8 +84,8 @@ if (!file.exists(file)) {
 Read and Subset the Data
 ------------------------
 
-Read the CSV into a `data.frame` and `subset` by Washington Providers  
-with a specific DRG Definition: '039 - EXTRACRANIAL PROCEDURES W/O CC/MCC'. Then
+Read the CSV into a `data.frame` and `subset` by Washington Providers with a 
+specific DRG Definition: '039 - EXTRACRANIAL PROCEDURES W/O CC/MCC'. Then 
 `select` only the columns `Provider.City` and `Average.Covered.Charges`. Lastly, 
 rename those columns to something a little shorter for convenience.
 

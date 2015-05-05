@@ -31,9 +31,9 @@
 tryinstall <- function(p) {
     n <- p[!(p %in% installed.packages()[,"Package"])]
     if(length(n)) {
-        install.packages(n, repos="http://cran.fhcrc.org") | {
+        install.packages(n, repos="http://cran.fhcrc.org", dependencies=T) | {
             source("http://bioconductor.org/biocLite.R")
-            biocLite(n, ask = FALSE)
+            biocLite(n, ask=F, dependencies=T)
         }
     }
 }
