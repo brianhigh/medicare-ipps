@@ -51,20 +51,37 @@ If you have not done so already, you will need to edit the `config` file to
 enter your own username (UW_NetID@washington.edu) and 
 [your own API key](https://sqlshare.escience.washington.edu/sqlshare/#s=credentials).
 
-Windows users may edit the config file by hand, e.g. from DOS as:
+The easiest way to edit it may be within RStudio, itself.
+
+```{r, eval=FALSE}
+file.edit('~/.sqlshare/config')
+```
+
+Please edit as needed and save your changes.
+
+Alternate ways to edit the config file
+--------------------------------------
+
+Some operating systems make it hard to find and open files without a file
+extension like "config" and within a folder starting with a "dot" (.) such 
+as ".sqlshare". So, the previous method of opening in RStudio may be the
+easiest, but here are some other options.
+
+Windows users may edit the config file by hand with Notepad, launched 
+from DOS as:
 
 ```
 notepad "%HOMEDRIVE%%HOMEPATH%\My Documents\.sqlshare\config"
 ```
 
-Mac users may may edit the config file by hand, e.g. from Terminal as:
+Mac users may want to edit the config file with TextEdit, launched from 
+Terminal as:
 
 ```
 open -a TextEdit "~/.sqlshare/config"
 ```
 
-Linux users may may edit the config file by hand, e.g. from their favorite 
-terminal emulator as:
+Linux users may wish to edit the config file using their favorite text editor, launched from their favorite shell as:
     
 ```
 $EDITOR "~/.sqlshare/config"
