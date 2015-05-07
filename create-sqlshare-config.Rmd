@@ -88,3 +88,24 @@ $EDITOR "~/.sqlshare/config"
 ```
 
 ... or just navigate to the file and edit with your favorite text editor.
+
+Test Connection
+---------------
+
+Run this code chunk to test your connection ...
+
+```{r}
+if (! require(sqlshare)) { 
+    install.packages("sqlshare")
+    library(sqlshare)
+}
+
+sql <- 'SELECT * FROM information_schema.tables'
+head(fetch.data.frame(sql))
+
+sql <- "SELECT [Provider City],[Average Covered Charges] 
+        FROM [high@washington.edu].[table_IPPS.csv] 
+        WHERE [Provider State] = 'WA' 
+        AND [DRG Definition] = '039 - EXTRACRANIAL PROCEDURES W/O CC/MCC'"
+head(fetch.data.frame(sql))
+```

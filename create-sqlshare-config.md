@@ -85,3 +85,55 @@ $EDITOR "~/.sqlshare/config"
 ```
 
 ... or just navigate to the file and edit with your favorite text editor.
+
+Test Connection
+---------------
+
+Run this code chunk to test your connection ...
+
+
+```r
+if (! require(sqlshare)) { 
+    install.packages("sqlshare")
+    library(sqlshare)
+}
+```
+
+```
+## Loading required package: sqlshare
+## Loading required package: RCurl
+## Loading required package: bitops
+```
+
+```r
+sql <- 'SELECT * FROM information_schema.tables'
+head(fetch.data.frame(sql))
+```
+
+```
+##   TABLE_CATALOG TABLE_SCHEMA                     TABLE_NAME TABLE_TYPE
+## 1      sqlshare          dbo            single_column_stats BASE TABLE
+## 2      sqlshare          dbo join_column_stats_experiment_v       VIEW
+## 3      sqlshare          dbo          single_column_stats_v       VIEW
+## 4      sqlshare          dbo                  indexed_reads BASE TABLE
+## 5      sqlshare          dbo                      test_view       VIEW
+## 6      sqlshare          dbo              join_column_stats BASE TABLE
+```
+
+```r
+sql <- "SELECT [Provider City],[Average Covered Charges] 
+        FROM [high@washington.edu].[table_IPPS.csv] 
+        WHERE [Provider State] = 'WA' 
+        AND [DRG Definition] = '039 - EXTRACRANIAL PROCEDURES W/O CC/MCC'"
+head(fetch.data.frame(sql))
+```
+
+```
+##   Provider.City Average.Covered.Charges
+## 1       SEATTLE               $16989.61
+## 2        YAKIMA               $32560.61
+## 3       EVERETT               $34694.24
+## 4     WENATCHEE               $13720.90
+## 5       OLYMPIA               $35711.18
+## 6       SEATTLE               $31339.68
+```
