@@ -45,37 +45,22 @@ stopifnot(file.exists("~/.sqlshare/config"))
 Prepare Environment
 -------------------
 
-Prepare the environment by loading the required packages...
+Load the required packages.
 
 
 ```r
-# tryinstall() function
-#     Conditionally install using install.packages()
-#     Usage: tryinstall(c("package1", "package2", ...))
-tryinstall <- function(p) {
-    n <- p[!(p %in% installed.packages()[,"Package"])]
-    if(length(n)) {
-        install.packages(n, repos="http://cran.fhcrc.org", dependencies=TRUE)
+# Load required packages. Install packages when necessary.
+for (pkg in c("sqlshare", "magrittr", "dplyr", "knitr", "ggplot2")) {
+    if (! suppressWarnings(require(pkg, character.only=TRUE))) {
+        install.packages(pkg, repos="http://cran.fhcrc.org", dependencies=TRUE)
+        if (! suppressWarnings(require(pkg, character.only=TRUE)) ) {
+            stop(paste0(c("Can't load package: ", pkg, "!"), collapse = ""))
+        }
     }
 }
-
-# You will need to load these packages
-pkgs <- c("sqlshare", "magrittr", "dplyr", "knitr", "ggplot2")
-
-# Attempt to load or install the packages using the tryinstall function
-tryinstall(pkgs)
-
-# ... or uncomment these next three lines to manually install packages.
-# install.packages(
-#     c("sqlshare", "magrittr", "dplyr", "knitr", "ggplot2"), 
-#     repos="http://cran.fhcrc.org", dependencies=TRUE)
-
-# Check that all packages will load
-for (pkg in pkgs) suppressPackageStartupMessages(suppressWarnings(
-  require(pkg, character.only=TRUE, quietly=TRUE)))
 ```
 
-... and setting up `knitr`.
+Set up `knitr`.
 
 
 ```r
